@@ -22,7 +22,7 @@ session_start();
     $qrSearchGuideRCount = mysqli_num_rows($qrSearchGuideRes);
 
     //Query for drivers
-    $qrSearchDriver = "SELECT * FROM guide WHERE DriverEmailAddress = '$emailAdrressInput'";
+    $qrSearchDriver = "SELECT * FROM drivers WHERE DriverEmailAddress = '$emailAdrressInput'";
     $qrSearchDriverRes = mysqli_query($conn, $qrSearchDriver);
     $qrSearchDriverRCount = mysqli_num_rows($qrSearchDriverRes);
 
@@ -73,7 +73,7 @@ session_start();
 		$guidePassword = $guideRecord[4];
 
         // Έλεγχος password συνδρομητή
-		if($passwordInput != $customerPassword){
+		if($passwordInput != $guidePassword){
 			echo '<html><meta charset="UTF-8"><script language="javascript">alert("Wrong password! Try again"); document.location="../Index.php";</script></html>';
 			exit();
 		}
@@ -101,7 +101,7 @@ session_start();
 		$driverPassword = $driverRecord[4];
 
         // Έλεγχος password συνδρομητή
-		if($passwordInput != $customerPassword){
+		if($passwordInput != $driverPassword){
 			echo '<html><meta charset="UTF-8"><script language="javascript">alert("Wrong password! Try again"); document.location="../Index.php";</script></html>';
 			exit();
 		}
