@@ -58,7 +58,7 @@ session_start();
 
 
             //Εδώ να πηγαίνει στο χάρτη για ατον πελάτη
-			header("Location: ../Index.php");
+			header("Location: ../Guidedtour.php");
 		}
 	}
 
@@ -86,7 +86,7 @@ session_start();
 
 
             //Εδώ να πηγαίνει στο χάρτη για τον ξεναγό
-			header("Location: ../Index.php");
+			header("Location: ../Guidedtour.php");
 		}
 	}
 
@@ -114,7 +114,7 @@ session_start();
 
 
             //Εδώ να πηγαίνει στο χάρτη για τον οδηγό
-			header("Location: ../Index.php");
+			header("Location: ../Guidedtour.php");
 		}
 	}
     
