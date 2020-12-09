@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <title>Amazing Guided Tours</title>
@@ -19,10 +20,10 @@
             <img class="mb-4" src="Images/SmallLogo.png" alt="" width="72" height="72">
             <h1 class="h5 mb-3 font-weight-normal">Sign in using your email address and your password</h1>
             <label for="UserAccountEmailField" class="sr-only">Email address</label>
-            <input type="email" id="UserAccountEmailField" class="form-control" placeholder="Email address" required autofocus>
-            <label for="UserAccountPassword" class="sr-only">Password</label>
-            <input type="password" id="UserAccountPassword" class="form-control" placeholder="Password" required>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <input type="email" name="UserAccountEmailField" id="UserAccountEmailField" class="form-control" placeholder="Email address" required autofocus>
+            <label for="UserAccountPasswordField" class="sr-only">Password</label>
+            <input type="password" name="UserAccountPasswordField" id="UserAccountPasswordField" class="form-control" placeholder="Password" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="LoginUsr">Sign in</button>
             <p></p>
             <h6 class="h6 mb-3 font-weight-normal"><a href="CreateAccount.html"><p>Sign up if you don't have an account</p></a></h6>
         </form>
