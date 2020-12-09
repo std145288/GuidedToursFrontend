@@ -1,3 +1,29 @@
+<?php
+
+    session_start();
+    //Connection to database
+    include 'Scripts/DbConnection.php';
+
+    //To store current user tours
+    $usersGuidedTours = array();
+    //Customer is connected
+    if (isset($_SESSION['currentCustomerId'])){
+        $CurrCustomerId=$_SESSION['currentCustomerId'];
+        //Find latest tour for customer
+        $qrCurrentTour = "SELECT * FROM guidedtours WHERE GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
+        $qrCurrentTourRes = mysqli_query($conn, $qrCurrentTour);
+        $qrCurrentTourRCount = mysqli_num_rows($qrCurrentTourRes); 
+        
+        //Εισαγωγή των άρθρων που βρέθηκαν σε πίνακα
+        if ($qrCurrentTourRCount!=0){
+            while($row = mysqli_fetch_assoc($qrCurrentTourRes)){
+                $usersGuidedTours[] = $row;
+            }
+        }
+    }
+
+    
+?>
 <html>
     <head>
         <title>Amazing Guided Tours</title>
@@ -11,6 +37,9 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+        
+        <!--Icons fontawasome-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
         
         <!--Leaflet-->
          <!-- Load Leaflet css -->
@@ -40,14 +69,36 @@
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                         </li>
+                        <?php if (isset($_SESSION['currentCustomerId'])) : ?>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Profile</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                <form name="frmUserInfo" method="post" action="Scripts/Logout.php" role="form">
+                                <h6>Στοιχεία σύνδεσης</h6>
+                                <div class="form-group" >
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i><label><?php echo $_SESSION['currentCustomerFirstName']." ".$_SESSION['currentCustomerLastName'] ?></label>
+                                </div>
+                                <div class="form-group" >
+                                    <i class="fa fa-address-card" aria-hidden="true"></i><label><?php echo $_SESSION['currentCustomerEmail'] ?></label>
+                                </div>
+                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Έξοδος</button>
+                                </form>
                             </div>
                         </li>
+                        <?php else: ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User profile</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                <div class="form-group" ><span class="glyphicon glyphicon-user"></span>
+                                    <i class="fa fa-user-circle"></i><label><?php echo "Not connected user" ?></label>
+                                </div>
+                                <div class="form-group" ><span class="glyphicon glyphicon-user"></span>
+                                    <a class="dropdown-item" href="CreateAccount.php">Signup</a>
+                                </div>
+                                
+                            </div>
+                        </li>
+                        <?php endif ?>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
@@ -60,34 +111,36 @@
         <div id="container">
             <div id="mapid"></div>
             <script>
-                var map = L.map('mapid').fitWorld();
-
-                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-                    maxZoom: 18,
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-                        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                    id: 'mapbox/streets-v11',
-                    tileSize: 512,
-                    zoomOffset: -1
-                }).addTo(map);
-
-                function onLocationFound(e) {
-                    var radius = e.accuracy / 2;
-
-                    L.marker(e.latlng).addTo(map)
-                        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-                    L.circle(e.latlng, radius).addTo(map);
-                }
-
-                function onLocationError(e) {
-                    alert(e.message);
-                }
-
-                map.on('locationfound', onLocationFound);
-                map.on('locationerror', onLocationError);
-
-                map.locate({setView: true, maxZoom: 18});
+                 var mymap, addedmarker;
+                                
+                            navigator.geolocation.getCurrentPosition(function(location) {
+                            /* Specified location on map from current location or fixed*/
+                                var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+                                mymap = L.map('mapid').setView(latlng, 18);
+                                //Adding the map and configuring it
+                                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                                maxZoom: 18,
+                                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                                    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                                id: 'mapbox/streets-v11',
+                                tileSize: 512,
+                                zoomOffset: -1
+                                }).addTo(mymap);
+                                //New group of markers
+                                newMarkers = new L.LayerGroup();
+                                //Listener that calls the function that on user's click adds a marker on the map
+                                mymap.on('click', addNewMarker); 
+                            });
+                        
+                            function addNewMarker(e){
+                                /* Marker at point that user clicked*/
+                                addedmarker = new L.marker([e.latlng.lat,e.latlng.lng]).addTo(mymap);
+                                //Mapping the custom popup form to marker
+                                //addedmarker.bindPopup(popupform).openPopup();
+                                document.getElementById('PoiLatitudeField').setAttribute("value", e.latlng.lat);
+                                document.getElementById('PoiLongitudeField').setAttribute("value", e.latlng.lng);
+                            }
             </script>
         </div>
     </body>
