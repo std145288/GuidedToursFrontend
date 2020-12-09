@@ -7,9 +7,10 @@ session_start();
     include 'DbConnection.php';
 
     //Στοιχεία σύνδεσης
-    $conn = $_SESSION['connection'];
-	$emailAdrressInput = $_POST['UserAccountEmailField'];
-	$passwordInput = $_POST['UserAccountPassword'];
+    //$conn = $_SESSION['connection'];
+
+	$emailAdrressInput=$_POST['UserAccountEmailField'];
+	$passwordInput=$_POST['UserAccountPasswordField'];
 
     //Query for customers
     $qrSearchCustomer = "SELECT * FROM useraccounts WHERE UserEmail = '$emailAdrressInput'";
@@ -117,6 +118,7 @@ session_start();
 			header("Location: ../Guidedtour.php");
 		}
 	}
+
     
 ob_end_flush();        
 mysqli_close($conn);
