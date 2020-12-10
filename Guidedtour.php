@@ -1,29 +1,43 @@
 <?php
-
     session_start();
     //Connection to database
     include 'Scripts/DbConnection.php';
-
-    //To store current user tours
-    $usersGuidedTours = array();
+    
+    //To store current user tour start poi
+    $usersGuidedToursStartPoi = array();
+    //To store current user tour end poi
+    $usersGuidedToursEndPoi = array();
     //Customer is connected
     if (isset($_SESSION['currentCustomerId'])){
         $CurrCustomerId=$_SESSION['currentCustomerId'];
-        //Find latest tour for customer
-        $qrCurrentTour = "SELECT * FROM guidedtours WHERE GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
-        $qrCurrentTourRes = mysqli_query($conn, $qrCurrentTour);
-        $qrCurrentTourRCount = mysqli_num_rows($qrCurrentTourRes); 
+        //Find latest tour start and end pois for customer
+        //Find current tour Start Poi
+        $qrCurrentTourStartPoi = "SELECT pointsofinterest.PoiName as startPoiName, pointsofinterest.PoiAddress as startPoiAddress, pointsofinterest.PoiLatitude as startPoiLatidute, pointsofinterest.PoiLongitude as startPoiLongitude, pointsofinterest.PoiBriefInfo as startPoiBriefInfo, pointsofinterest.PoiPhotoName as startPoiPhotoName,  pointsofinterest.PoiPhotoPath as startPoiPhotoPath  FROM pointsofinterest JOIN guidedtours ON pointsofinterest.PoiId = guidedtours.GuidedTourStartPoi WHERE guidedtours.GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
+        $qrCurrentTourStartPoiRes = mysqli_query($conn, $qrCurrentTourStartPoi);
+        $qrCurrentTourStartPoiRCount = mysqli_num_rows($qrCurrentTourStartPoiRes); 
+
+        //Insert records found to array
+        if ($qrCurrentTourStartPoiRCount!=0){
+            while($row = mysqli_fetch_assoc($qrCurrentTourStartPoiRes)){
+                $usersGuidedToursStartPoi[] = $row;
+            }
+        }
         
-        //Εισαγωγή των άρθρων που βρέθηκαν σε πίνακα
-        if ($qrCurrentTourRCount!=0){
-            while($row = mysqli_fetch_assoc($qrCurrentTourRes)){
-                $usersGuidedTours[] = $row;
+        //Find current tour End Poi
+        $qrCurrentTourEndPoi = "SELECT pointsofinterest.PoiName as endPoiName, pointsofinterest.PoiAddress as endPoiAddress, pointsofinterest.PoiLatitude as endPoiLatidute, pointsofinterest.PoiLongitude as endPoiLongitude, pointsofinterest.PoiBriefInfo as endPoiBriefInfo, pointsofinterest.PoiPhotoName as endPoiPhotoName,  pointsofinterest.PoiPhotoPath as endPoiPhotoPath  FROM pointsofinterest JOIN guidedtours ON pointsofinterest.PoiId = guidedtours.GuidedTourEndPoi WHERE guidedtours.GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
+        $qrCurrentTourEndPoiRes = mysqli_query($conn, $qrCurrentTourEndPoi);
+        $qrCurrentTourEndPoiRCount = mysqli_num_rows($qrCurrentTourEndPoiRes); 
+
+        //Insert records found to array
+        if ($qrCurrentTourEndPoiRCount!=0){
+            while($row = mysqli_fetch_assoc($qrCurrentTourEndPoiRes)){
+                $usersGuidedToursEndPoi[] = $row;
             }
         }
     }
-
-    
+    mysqli_close($conn);
 ?>
+
 <html>
     <head>
         <title>Amazing Guided Tours</title>
@@ -110,37 +124,116 @@
       
         <div id="container">
             <div id="mapid"></div>
+                
             <script>
-                 var mymap, addedmarker;
-                                
-                            navigator.geolocation.getCurrentPosition(function(location) {
-                            /* Specified location on map from current location or fixed*/
-                                var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
-                                mymap = L.map('mapid').setView(latlng, 18);
-                                //Adding the map and configuring it
-                                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-                                maxZoom: 18,
-                                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                                    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                                id: 'mapbox/streets-v11',
-                                tileSize: 512,
-                                zoomOffset: -1
-                                }).addTo(mymap);
-                                //New group of markers
-                                newMarkers = new L.LayerGroup();
-                                //Listener that calls the function that on user's click adds a marker on the map
-                                mymap.on('click', addNewMarker); 
-                            });
+                //Access the elements of the sql query arrays
+                //Tour Start poi query results
+                var jsStartPoiRecords = <?php echo json_encode($usersGuidedToursStartPoi); ?>;
+                //Tour End poi query results
+                var jsEndPoiRecords = <?php echo json_encode($usersGuidedToursEndPoi); ?>;
+                
+                //Map and markers variables
+                var mymap, addedmarker;
+    
+                //Map                
+                $(function(){
+                    
+                /* Specific location on map*/
+                   mymap = L.map('mapid').setView([jsStartPoiRecords[0]['startPoiLatidute'], jsStartPoiRecords[0]['startPoiLongitude']], 18);
+                    // Adding map with configuration
+                   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                   maxZoom: 18,
+                   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                     'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                   id: 'mapbox/streets-v11',
+                   tileSize: 512,
+                   zoomOffset: -1
+                }).addTo(mymap);
+                    //Creating a group of markers
+                    savedMarkers = new L.LayerGroup();
+                    //call the function that adds the markers on map
+                    addMarkers();
+                    //mymap.on('click', addNewMarker); 
+                });
+                
+                //function that adds the markers on map
+                function addMarkers(){ 
+                    
+                    //Start Poi marker------------------------------------------------------------------------------------------------
+                    //Start Poi Info from query to variable
+                    var objStartPoi = jsStartPoiRecords[0];
+                        for (var key in objStartPoi){
+                            var startPoiNm = objStartPoi['startPoiName'];
+                            var startPoiAddrs = objStartPoi['startPoiAddress'];
+                            var startPoiLatd = objStartPoi['startPoiLatidute'];
+                            var startPoiLongd = objStartPoi['startPoiLongitude'];
+                            var startPoiInf = objStartPoi['startPoiBriefInfo'];
+                            var startPoiPhotoName = objStartPoi['startPoiPhotoName'];
+                            var startPoiPhotoPath = objStartPoi['startPoiPhotoPath'];
+                    }
+                    
+                    //Creating the custom popup with bootstrap card for start poi
+                    var popupCardStartPoi = '<div class="card" style="width: 18rem;">'+
+                                              '<img src="'+startPoiPhotoPath+startPoiPhotoName+'" class="card-img-top" alt="...">'+
+                                              '<div class="card-body">'+
+                                                '<h5 class="card-title">'+startPoiNm+'</h5>'+
+                                                '<p class="card-text">'+startPoiInf+'</p>'+
+                                              '</div>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Address: '+startPoiAddrs+'</li>'+
+                                                '<li class="list-group-item">Latidute: '+startPoiLatd+'</li>'+
+                                                '<li class="list-group-item">Longitude: '+startPoiLongd+'</li>'+
+                                              '</ul>'+
+                                            '</div>';
+
+                    
                         
-                            function addNewMarker(e){
-                                /* Marker at point that user clicked*/
-                                addedmarker = new L.marker([e.latlng.lat,e.latlng.lng]).addTo(mymap);
-                                //Mapping the custom popup form to marker
-                                //addedmarker.bindPopup(popupform).openPopup();
-                                document.getElementById('PoiLatitudeField').setAttribute("value", e.latlng.lat);
-                                document.getElementById('PoiLongitudeField').setAttribute("value", e.latlng.lng);
-                            }
+                    //Add current marker of start poi using latidude and longitude
+                    addedmarker = new L.marker([startPoiLatd,startPoiLongd]).addTo(mymap);
+
+                    //Add custom popup with the start poi info
+                    addedmarker.bindPopup(popupCardStartPoi).openPopup();
+                    //Start Poi marker------------------------------------------------------------------------------------------------
+                    
+                    //End Poi marker--------------------------------------------------------------------------------------------------
+                    //Poi Info from query to variable
+                    var objEndPoi = jsEndPoiRecords[0];
+                        for (var key in objEndPoi){
+                            var endPoiNm = objEndPoi['endPoiName'];
+                            var endPoiAddrs = objEndPoi['endPoiAddress'];
+                            var endPoiLatd = objEndPoi['endPoiLatidute'];
+                            var endPoiLongd = objEndPoi['endPoiLongitude'];
+                            var endPoiInf = objEndPoi['endPoiBriefInfo'];
+                            var endPoiPhotoName = objEndPoi['endPoiPhotoName'];
+                            var endPoiPhotoPath = objEndPoi['endPoiPhotoPath'];
+                    }
+                    
+                    //Creating the custom popup with bootstrap card for end poi
+                    var popupCardEndPoi = '<div class="card" style="width: 18rem;">'+
+                                              '<img src="'+endPoiPhotoPath+endPoiPhotoName+'" class="card-img-top" alt="...">'+
+                                              '<div class="card-body">'+
+                                                '<h5 class="card-title">'+endPoiNm+'</h5>'+
+                                                '<p class="card-text">'+startPoiInf+'</p>'+
+                                              '</div>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Address: '+endPoiAddrs+'</li>'+
+                                                '<li class="list-group-item">Latidute: '+endPoiLatd+'</li>'+
+                                                '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
+                                              '</ul>'+
+                                            '</div>';
+
+                    
+                        
+                    //Add current marker of end poi using latidude and longitude
+                    addedmarker = new L.marker([endPoiLatd,endPoiLongd]).addTo(mymap);
+
+                    //Add custom popup with the end poi info
+                    addedmarker.bindPopup(popupCardEndPoi).openPopup();
+                    //End Poi marker--------------------------------------------------------------------------------------------------
+            
+                        
+                }  
             </script>
         </div>
     </body>
