@@ -12,7 +12,7 @@
         $CurrCustomerId=$_SESSION['currentCustomerId'];
         //Find latest tour start and end pois for customer
         //Find current tour Start Poi
-        $qrCurrentTourStartPoi = "SELECT pointsofinterest.PoiName as startPoiName, pointsofinterest.PoiAddress as startPoiAddress, pointsofinterest.PoiLatitude as startPoiLatidute, pointsofinterest.PoiLongitude as startPoiLongitude, pointsofinterest.PoiBriefInfo as startPoiBriefInfo, pointsofinterest.PoiPhotoName as startPoiPhotoName,  pointsofinterest.PoiPhotoPath as startPoiPhotoPath  FROM pointsofinterest JOIN guidedtours ON pointsofinterest.PoiId = guidedtours.GuidedTourStartPoi WHERE guidedtours.GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
+        $qrCurrentTourStartPoi = "SELECT pointsofinterest.PoiId as startPoiId, pointsofinterest.PoiName as startPoiName, pointsofinterest.PoiAddress as startPoiAddress, pointsofinterest.PoiLatitude as startPoiLatidute, pointsofinterest.PoiLongitude as startPoiLongitude, pointsofinterest.PoiBriefInfo as startPoiBriefInfo, pointsofinterest.PoiPhotoName as startPoiPhotoName,  pointsofinterest.PoiPhotoPath as startPoiPhotoPath  FROM pointsofinterest JOIN guidedtours ON pointsofinterest.PoiId = guidedtours.GuidedTourStartPoi WHERE guidedtours.GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
         $qrCurrentTourStartPoiRes = mysqli_query($conn, $qrCurrentTourStartPoi);
         $qrCurrentTourStartPoiRCount = mysqli_num_rows($qrCurrentTourStartPoiRes); 
 
@@ -24,7 +24,7 @@
         }
         
         //Find current tour End Poi
-        $qrCurrentTourEndPoi = "SELECT pointsofinterest.PoiName as endPoiName, pointsofinterest.PoiAddress as endPoiAddress, pointsofinterest.PoiLatitude as endPoiLatidute, pointsofinterest.PoiLongitude as endPoiLongitude, pointsofinterest.PoiBriefInfo as endPoiBriefInfo, pointsofinterest.PoiPhotoName as endPoiPhotoName,  pointsofinterest.PoiPhotoPath as endPoiPhotoPath  FROM pointsofinterest JOIN guidedtours ON pointsofinterest.PoiId = guidedtours.GuidedTourEndPoi WHERE guidedtours.GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
+        $qrCurrentTourEndPoi = "SELECT pointsofinterest.PoiId as endPoiId, pointsofinterest.PoiName as endPoiName, pointsofinterest.PoiAddress as endPoiAddress, pointsofinterest.PoiLatitude as endPoiLatidute, pointsofinterest.PoiLongitude as endPoiLongitude, pointsofinterest.PoiBriefInfo as endPoiBriefInfo, pointsofinterest.PoiPhotoName as endPoiPhotoName,  pointsofinterest.PoiPhotoPath as endPoiPhotoPath  FROM pointsofinterest JOIN guidedtours ON pointsofinterest.PoiId = guidedtours.GuidedTourEndPoi WHERE guidedtours.GuidedTourCustomer = '$CurrCustomerId' ORDER BY GuidedTourDate DESC";
         $qrCurrentTourEndPoiRes = mysqli_query($conn, $qrCurrentTourEndPoi);
         $qrCurrentTourEndPoiRCount = mysqli_num_rows($qrCurrentTourEndPoiRes); 
 
@@ -34,8 +34,54 @@
                 $usersGuidedToursEndPoi[] = $row;
             }
         }
+        
+        //Start End Pois coords
+        $startLat = $usersGuidedToursStartPoi[0]['startPoiLatidute'];
+        $startLng = $usersGuidedToursStartPoi[0]['startPoiLongitude'];
+        $endLat = $usersGuidedToursEndPoi[0]['endPoiLatidute'];
+        $endLng = $usersGuidedToursEndPoi[0]['endPoiLongitude'];
+        //Find all Other Pois
+        //Array to use
+        $allOtherPois = array();
+        //Start end pois
+        $foundStartPoiId = $usersGuidedToursStartPoi[0]['startPoiId'];
+        $foundEndPoiId = $usersGuidedToursEndPoi[0]['endPoiId'];
+        //Query for all Other Pois
+        $qrAllOtherPois = "SELECT * FROM pointsofinterest WHERE PoiId != '$foundStartPoiId' AND PoiId != '$foundEndPoiId'";
+        $qrAllOtherPoisRes = mysqli_query($conn, $qrAllOtherPois);
+        $qrAllOtherPoisRCount = mysqli_num_rows($qrAllOtherPoisRes);
+        
+        //Insert records found to array
+        if ($qrAllOtherPoisRCount!=0){
+            while ($row = mysqli_fetch_assoc($qrAllOtherPoisRes)){
+                if(checkPoi($startLat, $startLng, $endLat, $endLng, $row['PoiLatitude'],$row['PoiLongitude'])){
+                   $allOtherPois[]=$row; 
+                }
+            }
+        }
+           
     }
+
+    
     mysqli_close($conn);
+
+    function checkPoi($startLat, $startLng, $endLat, $endLng, $currLat, $currLng){
+        $accuracyValue = 0.001;
+        if(abs(($endLat-$startLat)*($currLng-$startLng)-($endLng-$startLng)*($currLat - $startLat))<$accuracyValue){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //function checkPoi($startLat, $startLng, $endLat, $endLng, $currLat, $currLng){
+        //$accuracyValue = 0.001;
+        //if(abs(($endLat-$startLat)*($currLng-$startLng)-($endLng-$startLng)*($currLat - $startLat))<$accuracyValue){
+            //return true;
+        //}else{
+           // return false;
+        //}
+    //}
 ?>
 
 <html>
@@ -132,6 +178,9 @@
                 //Tour End poi query results
                 var jsEndPoiRecords = <?php echo json_encode($usersGuidedToursEndPoi); ?>;
                 
+                //All Other between start end pois
+                var jsIntermediatePois = <?php echo json_encode($allOtherPois); ?>;
+                
                 //Map and markers variables
                 var mymap, addedmarker;
     
@@ -186,12 +235,20 @@
                                                 '<li class="list-group-item">Longitude: '+startPoiLongd+'</li>'+
                                               '</ul>'+
                                             '</div>';
-
-                    
+                    //Icon for start poi
+                    //var starticon = L.icon({
+                        //iconUrl: 'Images/StartIcon.png',
+                        //iconSize:     [38, 38], // size of the icon
+                        //shadowSize:   [50, 64], // size of the shadow
+                        //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+                        //shadowAnchor: [4, 62],  // the same for the shadow
+                        //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                    //});
                         
                     //Add current marker of start poi using latidude and longitude
                     addedmarker = new L.marker([startPoiLatd,startPoiLongd]).addTo(mymap);
-
+                    //Bind tooltip to added marker
+                    addedmarker.bindTooltip("Start", {permanent: true, direction: 'right'});
                     //Add custom popup with the start poi info
                     addedmarker.bindPopup(popupCardStartPoi).openPopup();
                     //Start Poi marker------------------------------------------------------------------------------------------------
@@ -224,15 +281,53 @@
                                             '</div>';
 
                     
-                        
+                    
                     //Add current marker of end poi using latidude and longitude
                     addedmarker = new L.marker([endPoiLatd,endPoiLongd]).addTo(mymap);
-
+                    //Bind tooltip to added marker
+                    addedmarker.bindTooltip("End", {permanent: true, direction: 'right'});
+                    
                     //Add custom popup with the end poi info
                     addedmarker.bindPopup(popupCardEndPoi).openPopup();
                     //End Poi marker--------------------------------------------------------------------------------------------------
-            
-                        
+                    
+                    //Adding other markers--------------------------------------------------------------------------------------------
+                    for(var j = 0;  j < jsIntermediatePois.length; j++){
+						   
+							var obj = jsIntermediatePois[j];
+								for (var key in obj){
+									var poiNm = obj['PoiName'];
+									var poiAddrs = obj['PoiAddress'];
+									var poiLatd = obj['PoiLatitude'];
+									var poiLongd = obj['PoiLongitude'];
+									var poiInf = obj['PoiBriefInfo'];
+                                    var poiPhotoName = obj['PoiPhotoName'];
+                                    var poiPhotoPath = obj['PoiPhotoPath'];
+								}
+							
+							 //Creating the custom popup with bootstrap card for end poi
+                            var popupCardOtherPoi = '<div class="card" style="width: 18rem;">'+
+                                              '<img src="'+poiPhotoPath+poiPhotoName+'" class="card-img-top" alt="...">'+
+                                              '<div class="card-body">'+
+                                                '<h5 class="card-title">'+poiNm+'</h5>'+
+                                                '<p class="card-text">'+poiInf+'</p>'+
+                                              '</div>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Address: '+poiAddrs+'</li>'+
+                                                '<li class="list-group-item">Latidute: '+poiLatd+'</li>'+
+                                                '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
+                                              '</ul>'+
+                                            '</div>';
+							
+							//Προσθήκη του τρέχοντα marker με όρισμα τα latidude και longitude
+							addedmarker = new L.marker([poiLatd,poiLongd]).addTo(mymap);
+							
+							//Προσθήκη του castom popup και αντιστοίχιση των πληροφοριών
+							addedmarker.bindPopup(popupCardOtherPoi).openPopup();
+
+							
+				    }
+                    //Adding other markers end--------------------------------------------------------------------------------------------
                 }  
             </script>
         </div>
