@@ -135,12 +135,4 @@
         }
     }
 
-    //function checkPoi($startLat, $startLng, $endLat, $endLng, $currLat, $currLng){
-        //$accuracyValue = 0.001;
-        //if(abs(($endLat-$startLat)*($currLng-$startLng)-($endLng-$startLng)*($currLat - $startLat))<$accuracyValue){
-            //return true;
-        //}else{
-           // return false;
-        //}
-    //}
 ?>
