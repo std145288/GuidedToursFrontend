@@ -25,7 +25,8 @@
             <input type="password" name="UserAccountPasswordField" id="UserAccountPasswordField" class="form-control" placeholder="Password" required>
             <button class="btn btn-lg btn-primary btn-block" type="submit" name="LoginUsr">Sign in</button>
             <p></p>
-            <h6 class="h6 mb-3 font-weight-normal"><a href="CreateAccount.html"><p>Sign up if you don't have an account</p></a></h6>
+            <h6 class="h6 mb-3 font-weight-normal"><a href="CreateAccount.php"><p>Sign up if you don't have an account</p></a></h6>
+            <h6 class="h6 mb-3 font-weight-normal"><a href="Map.php"><p>Or see the map of your area</p></a></h6>
         </form>
     </body>
 </html>

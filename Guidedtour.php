@@ -50,20 +50,14 @@
     <body>
         <div class="menuarea">
             <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="Home.php">AmGdTr</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                            <a class="nav-link" href="Map.php">Map</a>
                         </li>
                         <?php if (isset($_SESSION['currentCustomerId'])) : ?>
                         <li class="nav-item dropdown">
@@ -134,7 +128,7 @@
                         <?php endif ?>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
-                      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                      <input class="form-control mr-sm-2" type="text" placeholder="Search POI" aria-label="Search">
                       <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </div>
@@ -377,7 +371,7 @@
                     var popupCardStartPoi = '<div class="card scroll" style="width: 15rem; height: 30rem; overflow-y: auto; ">'+
                                               '<h6>Upcoming Tour Info:</h6>'+
                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Tour Date '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
+                                                '<li class="list-group-item">Tour Date: '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
                                                 '<li class="list-group-item">Tour start time: '+jsGuidedTour[0]['GuidedTourStartTime']+'</li>'+
                                                 '<li class="list-group-item">Tour end time: '+jsGuidedTour[0]['GuidedTourEndTime']+'</li>'+
                                                 '<li class="list-group-item">Number of visitors: '+jsGuidedTour[0]['NumberOfVisitors']+'</li>'+
@@ -385,20 +379,20 @@
                                               '</ul>'+
                                               '<h6>Customer Contact Info:</h6>'+
                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Customert first name '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
+                                                '<li class="list-group-item">Customer first name: '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
                                                 '<li class="list-group-item">Customer last name: '+jsGuidedTourCustomer[0]['tourCustomerLastName']+'</li>'+
-                                                '<li class="list-group-item">Customel email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
+                                                '<li class="list-group-item">Customer email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
                                               '</ul>'+
                                                 '<h6>Assigned Vehicle:</h6>'+
                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Vehicle Number '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
+                                                '<li class="list-group-item">Vehicle Number: '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
                                                 '<li class="list-group-item">Vehicle Plate Number: '+jsGuidedTourVehicle[0]['tourVehiclePlateNumber']+'</li>'+
                                               '</ul>'+
                                                 '<div class="card-title">'+
                                                 '<h6>Assigned Guide:</h6>'+
                                               '</div>'+
                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Guide Name '+jsGuidedTourGuide[0]['tourGuideFirstName']+'</li>'+
+                                                '<li class="list-group-item">Guide Name: '+jsGuidedTourGuide[0]['tourGuideFirstName']+'</li>'+
                                                 '<li class="list-group-item">Guide Last Name: '+jsGuidedTourGuide[0]['tourGuideLastName']+'</li>'+
                                                 '<li class="list-group-item">Guide Email Address: '+jsGuidedTourGuide[0]['tourGuideEmailAddress']+'</li>'+
                                               '</ul>'+
@@ -551,7 +545,7 @@
                     var popupCardStartPoi = '<div class="card scroll" style="width: 15rem; height: 30rem; overflow-y: auto; ">'+
                                                '<h6>Upcoming Tour Info:</h6>'+
                                                '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Tour Date '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
+                                                '<li class="list-group-item">Tour Date: '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
                                                 '<li class="list-group-item">Tour start time: '+jsGuidedTour[0]['GuidedTourStartTime']+'</li>'+
                                                 '<li class="list-group-item">Tour end time: '+jsGuidedTour[0]['GuidedTourEndTime']+'</li>'+
                                                 '<li class="list-group-item">Number of visitors: '+jsGuidedTour[0]['NumberOfVisitors']+'</li>'+
@@ -559,20 +553,20 @@
                                               '</ul>'+
                                               '<h6>Customer Contact Info:</h6>'+
                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Customert first name '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
+                                                '<li class="list-group-item">Customer first name: '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
                                                 '<li class="list-group-item">Customer last name: '+jsGuidedTourCustomer[0]['tourCustomerLastName']+'</li>'+
-                                                '<li class="list-group-item">Customel email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
+                                                '<li class="list-group-item">Customer email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
                                               '</ul>'+
                                                 '<h6>Assigned Vehicle:</h6>'+
                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Vehicle Number '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
+                                                '<li class="list-group-item">Vehicle Number: '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
                                                 '<li class="list-group-item">Vehicle Plate Number: '+jsGuidedTourVehicle[0]['tourVehiclePlateNumber']+'</li>'+
                                               '</ul>'+
                                                 '<div class="card-title">'+
                                                 '<h6>Assigned Driver:</h6>'+
                                               '</div>'+
                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Guide Name '+jsGuidedTourDriver[0]['tourDriverFirstName']+'</li>'+
+                                                '<li class="list-group-item">Guide Name: '+jsGuidedTourDriver[0]['tourDriverFirstName']+'</li>'+
                                                 '<li class="list-group-item">Guide Last Name: '+jsGuidedTourDriver[0]['tourDriverLastName']+'</li>'+
                                                 '<li class="list-group-item">Guide Email Address: '+jsGuidedTourDriver[0]['tourDriverEmailAddress']+'</li>'+
                                               '</ul>'+
