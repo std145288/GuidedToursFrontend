@@ -11,6 +11,11 @@
     if (isset($_SESSION['currentDriverId'])){
         include 'Scripts/GuidedTourDriver.php'; 
     }
+
+     //If driver connected
+    if (isset($_SESSION['currentGuideId'])){
+        include 'Scripts/GuidedTourGuide.php'; 
+    }
     
 
 ?>
@@ -94,7 +99,26 @@
                             </div>
                         </li>
                         <?php endif ?>
-                        <?php if (!isset($_SESSION['currentCustomerId']) and !isset($_SESSION['currentDriverId'])) : ?>
+                        
+                        <?php if (isset($_SESSION['currentGuideId'])) : ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Profile</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                <form name="frmUserInfo" method="post" action="Scripts/Logout.php" role="form">
+                                <h6>Guide info</h6>
+                                <div class="form-group" >
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i><label><?php echo $_SESSION['currentGuideFirstName']." ".$_SESSION['currentGuideLastName'] ?></label>
+                                </div>
+                                <div class="form-group" >
+                                    <i class="fa fa-address-card" aria-hidden="true"></i><label><?php echo $_SESSION['currentGuideEmail'] ?></label>
+                                </div>
+                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Έξοδος</button>
+                                </form>
+                            </div>
+                        </li>
+                        <?php endif ?>
+                        
+                        <?php if (!isset($_SESSION['currentCustomerId']) and !isset($_SESSION['currentDriverId']) and !isset($_SESSION['currentGuideId'])) : ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User profile</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -442,6 +466,195 @@
                                               '<img src="'+poiPhotoPath+poiPhotoName+'" class="card-img-top" alt="...">'+
                                               '<div class="card-title">'+
                                                 '<h5>'+poiNm+'</h5>'+
+                                              '</div>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Address: '+poiAddrs+'</li>'+
+                                                '<li class="list-group-item">Latidute: '+poiLatd+'</li>'+
+                                                '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
+                                              '</ul>'+
+                                            '</div>';
+							
+							//Προσθήκη του τρέχοντα marker με όρισμα τα latidude και longitude
+							addedmarker = new L.marker([poiLatd,poiLongd]).addTo(mymap);
+							
+							//Προσθήκη του castom popup και αντιστοίχιση των πληροφοριών
+							addedmarker.bindPopup(popupCardOtherPoi);
+							
+				    }
+                    //Adding other markers end--------------------------------------------------------------------------------------------
+                }  
+            </script>
+            <?php endif ?>
+            <!-- ----------------------------------------------------------------------------------------------------------------------- -->
+            
+             <!--If guide is connected ------------------------------------------------------------------------------------------------- -->
+            <?php if (isset($_SESSION['currentGuideId'])) : ?>
+            <script>
+                //Access the elements of the sql query arrays
+                //Guided tour
+                var jsGuidedTour = <?php echo json_encode($guidesGuidedTours); ?>;
+                //Tour Start poi query results
+                var jsStartPoiRecords = <?php echo json_encode($guidesGuidedToursStartPoi); ?>;
+                //Tour End poi query results
+                var jsEndPoiRecords = <?php echo json_encode($guidesGuidedToursEndPoi); ?>;
+                
+                //All Other between start end pois
+                var jsIntermediatePois = <?php echo json_encode($allOtherPois); ?>;
+                
+                //Tour Vehicle
+                var jsGuidedTourVehicle = <?php echo json_encode($guidesGuidedToursVehicle); ?>;
+                //Tour Guide
+                var jsGuidedTourDriver = <?php echo json_encode($guidesGuidedToursDriver); ?>;
+                //Tour customer
+                var jsGuidedTourCustomer = <?php echo json_encode($guidesGuidedToursCustomer); ?>;
+                //Map and markers variables
+                var mymap, addedmarker;
+    
+                //Map                
+                $(function(){
+                    
+                /* Specific location on map*/
+                   mymap = L.map('mapid').setView([jsStartPoiRecords[0]['startPoiLatidute'], jsStartPoiRecords[0]['startPoiLongitude']], 18);
+                    // Adding map with configuration
+                   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                   maxZoom: 18,
+                   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                     'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                   id: 'mapbox/streets-v11',
+                   tileSize: 512,
+                   zoomOffset: -1
+                }).addTo(mymap);
+                    //Creating a group of markers
+                    savedMarkers = new L.LayerGroup();
+                    //call the function that adds the markers on map
+                    addMarkers();
+                    //mymap.on('click', addNewMarker); 
+                });
+                
+                //function that adds the markers on map
+                function addMarkers(){ 
+                    //Info from Guided tour
+                    
+                    
+                    //Start Poi marker------------------------------------------------------------------------------------------------
+                    //Start Poi Info from query to variable
+                    var objStartPoi = jsStartPoiRecords[0];
+                        for (var key in objStartPoi){
+                            var startPoiNm = objStartPoi['startPoiName'];
+                            var startPoiAddrs = objStartPoi['startPoiAddress'];
+                            var startPoiLatd = objStartPoi['startPoiLatidute'];
+                            var startPoiLongd = objStartPoi['startPoiLongitude'];
+                            var poiInf = objStartPoi['startPoiDetailedInfo'];
+                    }
+                    //Creating the custom popup with bootstrap card for start poi
+                    var popupCardStartPoi = '<div class="card scroll" style="width: 15rem; height: 30rem; overflow-y: auto; ">'+
+                                               '<h6>Upcoming Tour Info:</h6>'+
+                                               '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Tour Date '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
+                                                '<li class="list-group-item">Tour start time: '+jsGuidedTour[0]['GuidedTourStartTime']+'</li>'+
+                                                '<li class="list-group-item">Tour end time: '+jsGuidedTour[0]['GuidedTourEndTime']+'</li>'+
+                                                '<li class="list-group-item">Number of visitors: '+jsGuidedTour[0]['NumberOfVisitors']+'</li>'+
+                                                '<li class="list-group-item">Start poi: '+startPoiNm+'</li>'+
+                                              '</ul>'+
+                                              '<h6>Customer Contact Info:</h6>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Customert first name '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
+                                                '<li class="list-group-item">Customer last name: '+jsGuidedTourCustomer[0]['tourCustomerLastName']+'</li>'+
+                                                '<li class="list-group-item">Customel email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
+                                              '</ul>'+
+                                                '<h6>Assigned Vehicle:</h6>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Vehicle Number '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
+                                                '<li class="list-group-item">Vehicle Plate Number: '+jsGuidedTourVehicle[0]['tourVehiclePlateNumber']+'</li>'+
+                                              '</ul>'+
+                                                '<div class="card-title">'+
+                                                '<h6>Assigned Driver:</h6>'+
+                                              '</div>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Guide Name '+jsGuidedTourDriver[0]['tourDriverFirstName']+'</li>'+
+                                                '<li class="list-group-item">Guide Last Name: '+jsGuidedTourDriver[0]['tourDriverLastName']+'</li>'+
+                                                '<li class="list-group-item">Guide Email Address: '+jsGuidedTourDriver[0]['tourDriverEmailAddress']+'</li>'+
+                                              '</ul>'+
+                                                '</ul>'+
+                                                '<div class="card-title">'+
+                                                '<h6>Poi info:</h6>'+
+                                                '</div>'+
+                                                '<div class="card-body scroll" style="overflow-y: auto;">'+
+                                                '<p class="card-text">'+poiInf+'</p>'+
+                                                '</div>'+ 
+                                            '</div>';
+                        
+                    //Add current marker of start poi using latidude and longitude
+                    addedmarker = new L.marker([startPoiLatd,startPoiLongd]).addTo(mymap);
+                    //Bind tooltip to added marker
+                    addedmarker.bindTooltip("Start", {permanent: true, direction: 'right'});
+                    //Add custom popup with the start poi info
+                    addedmarker.bindPopup(popupCardStartPoi).openPopup();
+                    //Start Poi marker------------------------------------------------------------------------------------------------
+                    
+                    //End Poi marker--------------------------------------------------------------------------------------------------
+                    //Poi Info from query to variable
+                    var objEndPoi = jsEndPoiRecords[0];
+                        for (var key in objEndPoi){
+                            var endPoiNm = objEndPoi['endPoiName'];
+                            var endPoiAddrs = objEndPoi['endPoiAddress'];
+                            var endPoiLatd = objEndPoi['endPoiLatidute'];
+                            var endPoiLongd = objEndPoi['endPoiLongitude'];
+                            var endPoiInf =  objEndPoi['endPoiDetailedInfo'];
+                            var endPoiPhotoName = objEndPoi['endPoiPhotoName'];
+                            var endPoiPhotoPath = objEndPoi['endPoiPhotoPath'];
+                    }
+                    
+                    //Creating the custom popup with bootstrap card for end poi
+                    var popupCardEndPoi = '<div class="card" style="width: 15rem; height: 30rem;">'+
+                                              '<img src="'+endPoiPhotoPath+endPoiPhotoName+'" class="card-img-top" alt="...">'+
+                                              '<div class="card-title">'+
+                                                '<h5>'+endPoiNm+'</h5>'+
+                                              '</div>'+
+                                              '<div class="card-body scroll" style="overflow-y: auto;">'+
+                                                '<p class="card-text">'+endPoiInf+'</p>'+
+                                              '</div>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Address: '+endPoiAddrs+'</li>'+
+                                                '<li class="list-group-item">Latidute: '+endPoiLatd+'</li>'+
+                                                '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
+                                              '</ul>'+
+                                            '</div>';
+
+                    
+                    
+                    //Add current marker of end poi using latidude and longitude
+                    addedmarker = new L.marker([endPoiLatd,endPoiLongd]).addTo(mymap);
+                    //Bind tooltip to added marker
+                    addedmarker.bindTooltip("End", {permanent: true, direction: 'right'});
+                    
+                    //Add custom popup with the end poi info
+                    addedmarker.bindPopup(popupCardEndPoi);
+                    //End Poi marker--------------------------------------------------------------------------------------------------
+                    
+                    //Adding other markers--------------------------------------------------------------------------------------------
+                    for(var j = 0;  j < jsIntermediatePois.length; j++){
+						   
+							var obj = jsIntermediatePois[j];
+								for (var key in obj){
+									var poiNm = obj['PoiName'];
+									var poiAddrs = obj['PoiAddress'];
+									var poiLatd = obj['PoiLatitude'];
+									var poiLongd = obj['PoiLongitude'];
+                                    var poiInfo = obj['PoiDetailedInfo'];
+                                    var poiPhotoName = obj['PoiPhotoName'];
+                                    var poiPhotoPath = obj['PoiPhotoPath'];
+								}
+							
+							 //Creating the custom popup with bootstrap card for end poi
+                            var popupCardOtherPoi = '<div class="card" style="width: 15rem; height: 30rem; ">'+
+                                              '<img src="'+poiPhotoPath+poiPhotoName+'" class="card-img-top" alt="...">'+
+                                              '<div class="card-title">'+
+                                                '<h5>'+poiNm+'</h5>'+
+                                              '</div>'+
+                                                '<div class="card-body scroll" style="overflow-y: auto;">'+
+                                                '<p class="card-text">'+poiInfo+'</p>'+
                                               '</div>'+
                                               '<ul class="list-group list-group-flush">'+
                                                 '<li class="list-group-item">Address: '+poiAddrs+'</li>'+
