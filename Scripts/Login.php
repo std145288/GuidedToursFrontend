@@ -30,7 +30,7 @@ session_start();
 
     
     //Message that user not found
-    if ($qrSearchCustomerRCount == 0 and $qrSearchGuideRCount == 0 and $qrSearchDriverRCount){
+    if ($qrSearchCustomerRCount == 0 and $qrSearchGuideRCount == 0 and $qrSearchDriverRCount == 0){
 		echo '<html><meta charset="UTF-8"><script language="javascript">alert("User not found with this email address!"); document.location="../Index.php";</script></html>';
 		exit();
 	}
@@ -108,10 +108,10 @@ session_start();
 		}
     else{
 
-            $_SESSION['currentDriverId'] = $guideId;
-			$_SESSION['currentDriverFirstName'] = $guideFName;
-			$_SESSION['currentDriverLastName'] = $guideLNname;
-			$_SESSION['currentDriverEmail'] = $guideEmail;
+            $_SESSION['currentDriverId'] = $driverId;
+			$_SESSION['currentDriverFirstName'] = $driverFName;
+			$_SESSION['currentDriverLastName'] = $driverLNname;
+			$_SESSION['currentDriverEmail'] = $driverEmail;
 
 
             //Εδώ να πηγαίνει στο χάρτη για τον οδηγό
