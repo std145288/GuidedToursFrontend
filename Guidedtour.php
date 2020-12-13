@@ -61,7 +61,7 @@
                         </li>
                         <?php if (isset($_SESSION['currentCustomerId'])) : ?>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Profile</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['currentCustomerEmail'] ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
                                 <form name="frmUserInfo" method="post" action="Scripts/Logout.php" role="form">
                                 <h6>User info</h6>
@@ -71,14 +71,14 @@
                                 <div class="form-group" >
                                     <i class="fa fa-address-card" aria-hidden="true"></i><label><?php echo $_SESSION['currentCustomerEmail'] ?></label>
                                 </div>
-                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Έξοδος</button>
+                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Exit</button>
                                 </form>
                             </div>
                         </li>
                         <?php endif ?>
                         <?php if (isset($_SESSION['currentDriverId'])) : ?>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Profile</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['currentDriverEmail'] ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
                                 <form name="frmUserInfo" method="post" action="Scripts/Logout.php" role="form">
                                 <h6>Driver info</h6>
@@ -88,7 +88,7 @@
                                 <div class="form-group" >
                                     <i class="fa fa-address-card" aria-hidden="true"></i><label><?php echo $_SESSION['currentDriverEmail'] ?></label>
                                 </div>
-                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Έξοδος</button>
+                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Exit</button>
                                 </form>
                             </div>
                         </li>
@@ -96,7 +96,7 @@
                         
                         <?php if (isset($_SESSION['currentGuideId'])) : ?>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User Profile</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['currentGuideEmail'] ?></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
                                 <form name="frmUserInfo" method="post" action="Scripts/Logout.php" role="form">
                                 <h6>Guide info</h6>
@@ -106,7 +106,7 @@
                                 <div class="form-group" >
                                     <i class="fa fa-address-card" aria-hidden="true"></i><label><?php echo $_SESSION['currentGuideEmail'] ?></label>
                                 </div>
-                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Έξοδος</button>
+                                <button class="btn btn-block btn-danger" id="btnLogout" type="submit">Exit</button>
                                 </form>
                             </div>
                         </li>
@@ -126,6 +126,9 @@
                             </div>
                         </li>
                         <?php endif ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="About.php">About</a>
+                        </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                       <input class="form-control mr-sm-2" type="text" placeholder="Search POI" aria-label="Search">
@@ -191,20 +194,50 @@
                     }
                     
                     //Creating the custom popup with bootstrap card for start poi
-                    var popupCardStartPoi = '<div class="card" style="width: 15rem; height: 30rem; ">'+
-                                              '<img src="'+startPoiPhotoPath+startPoiPhotoName+'" class="card-img-top" alt="...">'+
+                    var popupCardStartPoi = '<div class="card" style="width: 15rem; height: 32rem; ">'+
                                               '<div class="card-title">'+
-                                                '<h5>'+startPoiNm+'</h5>'+
+                                                '<h6>'+startPoiNm+'</h6>'+
                                               '</div>'+
-                                              '<div class="card-body scroll" style="overflow-y: auto;">'+
-                                                '<p class="card-text">'+startPoiInf+'</p>'+
-                                              '</div>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Address: '+startPoiAddrs+'</li>'+
-                                                '<li class="list-group-item">Latidute: '+startPoiLatd+'</li>'+
-                                                '<li class="list-group-item">Longitude: '+startPoiLongd+'</li>'+
-                                              '</ul>'+
+                                              '<img src="'+startPoiPhotoPath+startPoiPhotoName+'" class="card-img-top" alt="...">'+
+                                                '<div class="accordion" id="accordionExample">'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingOne">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                                                              'POI Location info'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">'+
+                                                          '<div class="card-body">'+
+                                                            '<ul class="list-group list-group-flush">'+
+                                                                    '<li class="list-group-item">Address: '+startPoiAddrs+'</li>'+
+                                                                    '<li class="list-group-item">Latidute: '+startPoiLatd+'</li>'+
+                                                                    '<li class="list-group-item">Longitude: '+startPoiLongd+'</li>'+
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingTwo">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">'+
+                                                              'POI Information'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
+                                                          '<div class="card-body scroll" style=" height: 12rem; overflow-y: auto;">'+
+                                                             '<class="card-text">'+startPoiInf+
+                                                          '</div>'+ 
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                    '</div>';
                                             '</div>';
+                    
+                    
+                           
+                    
                     //Icon for start poi
                     //var starticon = L.icon({
                         //iconUrl: 'Images/StartIcon.png',
@@ -397,13 +430,86 @@
                                                 '<li class="list-group-item">Guide Email Address: '+jsGuidedTourGuide[0]['tourGuideEmailAddress']+'</li>'+
                                               '</ul>'+
                                             '</div>';
-                        
+                    var popupCardStartPoi2 = '<div class="accordion" id="accordionExample">'+
+                                  '<div class="card">'+
+                                    '<div class="card-header" id="headingOne">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                                          'Upcoming Tour Info'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                        '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Tour Date: '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
+                                                '<li class="list-group-item">Tour start time: '+jsGuidedTour[0]['GuidedTourStartTime']+'</li>'+
+                                                '<li class="list-group-item">Tour end time: '+jsGuidedTour[0]['GuidedTourEndTime']+'</li>'+
+                                                '<li class="list-group-item">Number of visitors: '+jsGuidedTour[0]['NumberOfVisitors']+'</li>'+
+                                                '<li class="list-group-item">Start poi: '+startPoiNm+'</li>'+
+                                              '</ul>'+
+                                      '</div>'+
+                                    '</div>'+
+                                  '</div>'+
+                                  '<div class="card">'+
+                                    '<div class="card-header" id="headingTwo">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">'+
+                                          'Customer Contact Info'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                        '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Customer first name: '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
+                                                '<li class="list-group-item">Customer last name: '+jsGuidedTourCustomer[0]['tourCustomerLastName']+'</li>'+
+                                                '<li class="list-group-item">Customer email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
+                                              '</ul>'+
+                                      '</div>'+
+                                    '</div>'+
+                                  '</div>'+
+                                  '<div class="card">'+
+                                    '<div class="card-header" id="headingThree">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">'+
+                                          'Assigned Vehicle'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseThree" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                         '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Vehicle Number: '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
+                                                '<li class="list-group-item">Vehicle Plate Number: '+jsGuidedTourVehicle[0]['tourVehiclePlateNumber']+'</li>'+
+                                              '</ul>'+
+                                    '</div>'+
+                                  '</div>'+
+                                '</div>'+
+                                '<div class="card">'+
+                                    '<div class="card-header" id="headingThree">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">'+
+                                          'Assigned Guide'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                        '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Guide Name: '+jsGuidedTourGuide[0]['tourGuideFirstName']+'</li>'+
+                                                '<li class="list-group-item">Guide Last Name: '+jsGuidedTourGuide[0]['tourGuideLastName']+'</li>'+
+                                                '<li class="list-group-item">Guide Email Address: '+jsGuidedTourGuide[0]['tourGuideEmailAddress']+'</li>'+
+                                              '</ul>'+
+                                    '</div>'+
+                                  '</div>'+
+                                '</div>';
                     //Add current marker of start poi using latidude and longitude
                     addedmarker = new L.marker([startPoiLatd,startPoiLongd]).addTo(mymap);
                     //Bind tooltip to added marker
                     addedmarker.bindTooltip("Start", {permanent: true, direction: 'right'});
                     //Add custom popup with the start poi info
-                    addedmarker.bindPopup(popupCardStartPoi).openPopup();
+                    addedmarker.bindPopup(popupCardStartPoi2).openPopup();
                     //Start Poi marker------------------------------------------------------------------------------------------------
                     
                     //End Poi marker--------------------------------------------------------------------------------------------------
@@ -578,13 +684,102 @@
                                                 '<p class="card-text">'+poiInf+'</p>'+
                                                 '</div>'+ 
                                             '</div>';
+                    
+                    var popupCardStartPoi2 = '<div class="accordion" id="accordionExample">'+
+                                  '<div class="card">'+
+                                    '<div class="card-header" id="headingOne">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                                          'Upcoming Tour Info'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                        '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Tour Date: '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
+                                                '<li class="list-group-item">Tour start time: '+jsGuidedTour[0]['GuidedTourStartTime']+'</li>'+
+                                                '<li class="list-group-item">Tour end time: '+jsGuidedTour[0]['GuidedTourEndTime']+'</li>'+
+                                                '<li class="list-group-item">Number of visitors: '+jsGuidedTour[0]['NumberOfVisitors']+'</li>'+
+                                                '<li class="list-group-item">Start poi: '+startPoiNm+'</li>'+
+                                      '</div>'+
+                                    '</div>'+
+                                  '</div>'+
+                                  '<div class="card">'+
+                                    '<div class="card-header" id="headingTwo">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">'+
+                                          'Customer Contact Info'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                        '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Customer first name: '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
+                                                '<li class="list-group-item">Customer last name: '+jsGuidedTourCustomer[0]['tourCustomerLastName']+'</li>'+
+                                                '<li class="list-group-item">Customer email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
+                                              '</ul>'+
+                                      '</div>'+
+                                    '</div>'+
+                                  '</div>'+
+                                  '<div class="card">'+
+                                    '<div class="card-header" id="headingThree">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">'+
+                                          'Assigned Vehicle'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                         '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Vehicle Number: '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
+                                                '<li class="list-group-item">Vehicle Plate Number: '+jsGuidedTourVehicle[0]['tourVehiclePlateNumber']+'</li>'+
+                                              '</ul>'+
+                                    '</div>'+
+                                  '</div>'+
+                                '</div>'+
+                                '<div class="card">'+
+                                    '<div class="card-header" id="headingFour">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">'+
+                                          'Assigned Guide'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">'+
+                                      '<div class="card-body">'+
+                                        '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Guide Name: '+jsGuidedTourDriver[0]['tourDriverFirstName']+'</li>'+
+                                                '<li class="list-group-item">Guide Last Name: '+jsGuidedTourDriver[0]['tourDriverLastName']+'</li>'+
+                                                '<li class="list-group-item">Guide Email Address: '+jsGuidedTourDriver[0]['tourDriverEmailAddress']+'</li>'+
+                                              '</ul>'+
+                                    '</div>'+
+                                  '</div>'+
+                                '</div>'+
+                                '<div class="card">'+
+                                    '<div class="card-header" id="headingFive">'+
+                                      '<h2 class="mb-0">'+
+                                        '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">'+
+                                          'Poi info'+
+                                        '</button>'+
+                                      '</h2>'+
+                                    '</div>'+
+                                    '<div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">'+
+                                      '<div class="card-body scroll" style=" height: 14rem; overflow-y: auto;">'+
+                                         '<class="card-text">'+poiInf+
+                                      '</div>'+ 
+                                    '</div>'+
+                                  '</div>'+
+                                '</div>';
                         
                     //Add current marker of start poi using latidude and longitude
                     addedmarker = new L.marker([startPoiLatd,startPoiLongd]).addTo(mymap);
                     //Bind tooltip to added marker
                     addedmarker.bindTooltip("Start", {permanent: true, direction: 'right'});
                     //Add custom popup with the start poi info
-                    addedmarker.bindPopup(popupCardStartPoi).openPopup();
+                    addedmarker.bindPopup(popupCardStartPoi2).openPopup();
                     //Start Poi marker------------------------------------------------------------------------------------------------
                     
                     //End Poi marker--------------------------------------------------------------------------------------------------

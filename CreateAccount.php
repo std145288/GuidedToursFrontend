@@ -33,6 +33,9 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="CreateAccount.php">Create Account</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="About.php">About</a>
+                        </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                       <input class="form-control mr-sm-2" type="text" placeholder="Search POI" aria-label="Search">

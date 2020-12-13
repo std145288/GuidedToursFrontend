@@ -59,7 +59,7 @@ session_start();
 
 
             //Εδώ να πηγαίνει στο χάρτη για ατον πελάτη
-			header("Location: ../Guidedtour.php");
+			header("Location: ../Home.php");
 		}
 	}
 
