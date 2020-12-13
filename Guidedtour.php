@@ -194,7 +194,7 @@
                     }
                     
                     //Creating the custom popup with bootstrap card for start poi
-                    var popupCardStartPoi = '<div class="card" style="width: 15rem; height: 32rem; ">'+
+                    var popupCardStartPoi = '<div class="card" style="width: 15rem; height: 34rem; ">'+
                                               '<div class="card-title">'+
                                                 '<h6>'+startPoiNm+'</h6>'+
                                               '</div>'+
@@ -214,6 +214,7 @@
                                                                     '<li class="list-group-item">Address: '+startPoiAddrs+'</li>'+
                                                                     '<li class="list-group-item">Latidute: '+startPoiLatd+'</li>'+
                                                                     '<li class="list-group-item">Longitude: '+startPoiLongd+'</li>'+
+                                                            '</ul>'+
                                                           '</div>'+
                                                         '</div>'+
                                                       '</div>'+
@@ -284,7 +285,48 @@
                                                 '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
                                               '</ul>'+
                                             '</div>';
-
+                    
+                     var popupCardEndPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+                                              '<div class="card-title">'+
+                                                '<h6>'+endPoiNm+'</h6>'+
+                                              '</div>'+
+                                              '<img src="'+endPoiPhotoPath+endPoiPhotoName+'" class="card-img-top" alt="...">'+
+                                                '<div class="accordion" id="accordionExample">'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingOne">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                                                              'POI Location info'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">'+
+                                                          '<div class="card-body">'+
+                                                            '<ul class="list-group list-group-flush">'+
+                                                                    '<li class="list-group-item">Address: '+endPoiAddrs+'</li>'+
+                                                                    '<li class="list-group-item">Latidute: '+endPoiLatd+'</li>'+
+                                                                    '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
+                                                            '</ul>'+
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingTwo">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">'+
+                                                              'POI Information'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
+                                                          '<div class="card-body scroll" style=" height: 12rem; overflow-y: auto;">'+
+                                                             '<class="card-text">'+startPoiInf+
+                                                          '</div>'+ 
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                    '</div>';
+                                            '</div>';
                     
                     
                     //Add current marker of end poi using latidude and longitude
@@ -293,7 +335,7 @@
                     addedmarker.bindTooltip("End", {permanent: true, direction: 'right'});
                     
                     //Add custom popup with the end poi info
-                    addedmarker.bindPopup(popupCardEndPoi);
+                    addedmarker.bindPopup(popupCardEndPoi2);
                     //End Poi marker--------------------------------------------------------------------------------------------------
                     
                     //Adding other markers--------------------------------------------------------------------------------------------
@@ -325,12 +367,54 @@
                                                 '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
                                               '</ul>'+
                                             '</div>';
+                        
+                        var popupCardOtherPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+                                              '<div class="card-title">'+
+                                                '<h6>'+poiNm+'</h6>'+
+                                              '</div>'+
+                                              '<img src="'+poiPhotoPath+poiPhotoName+'" class="card-img-top" alt="..." >'+
+                                                '<div class="accordion" id="accordionExample">'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingOne">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                                                              'POI Location info'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">'+
+                                                          '<div class="card-body">'+
+                                                            '<ul class="list-group list-group-flush">'+
+                                                                    '<li class="list-group-item">Address: '+poiAddrs+'</li>'+
+                                                                    '<li class="list-group-item">Latidute: '+poiLatd+'</li>'+
+                                                                    '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
+                                                            '</ul>'+
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingTwo">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">'+
+                                                              'POI Information'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
+                                                          '<div class="card-body scroll" style=" height: 12rem; overflow-y: auto;">'+
+                                                             '<class="card-text">'+poiInf+
+                                                          '</div>'+ 
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                    '</div>';
+                                            '</div>';
 							
 							//Προσθήκη του τρέχοντα marker με όρισμα τα latidude και longitude
 							addedmarker = new L.marker([poiLatd,poiLongd]).addTo(mymap);
 							
 							//Προσθήκη του castom popup και αντιστοίχιση των πληροφοριών
-							addedmarker.bindPopup(popupCardOtherPoi);
+							addedmarker.bindPopup(popupCardOtherPoi2);
 							
 				    }
                     //Adding other markers end--------------------------------------------------------------------------------------------
@@ -810,6 +894,49 @@
                                                 '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
                                               '</ul>'+
                                             '</div>';
+                    
+                    var popupCardEndPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+                                              '<div class="card-title">'+
+                                                '<h6>'+endPoiNm+'</h6>'+
+                                              '</div>'+
+                                              '<img src="'+endPoiPhotoPath+endPoiPhotoName+'" class="card-img-top" alt="..." >'+
+                                                '<div class="accordion" id="accordionExample">'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingOne">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                                                              'POI Location info'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">'+
+                                                          '<div class="card-body">'+
+                                                            '<ul class="list-group list-group-flush">'+
+                                                                    '<li class="list-group-item">Address: '+endPoiAddrs+'</li>'+
+                                                                    '<li class="list-group-item">Latidute: '+endPoiLatd+'</li>'+
+                                                                    '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
+                                                            '</ul>'+
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingTwo">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">'+
+                                                              'POI Information'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
+                                                          '<div class="card-body scroll" style=" height: 12rem; overflow-y: auto;">'+
+                                                             '<class="card-text">'+endPoiInf+
+                                                          '</div>'+ 
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                    '</div>';
+                                            '</div>';
+
 
                     
                     
@@ -819,7 +946,7 @@
                     addedmarker.bindTooltip("End", {permanent: true, direction: 'right'});
                     
                     //Add custom popup with the end poi info
-                    addedmarker.bindPopup(popupCardEndPoi);
+                    addedmarker.bindPopup(popupCardEndPoi2);
                     //End Poi marker--------------------------------------------------------------------------------------------------
                     
                     //Adding other markers--------------------------------------------------------------------------------------------
@@ -851,12 +978,54 @@
                                                 '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
                                               '</ul>'+
                                             '</div>';
+                        
+                        var popupCardOtherPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+                                              '<div class="card-title">'+
+                                                '<h6>'+poiNm+'</h6>'+
+                                              '</div>'+
+                                              '<img src="'+poiPhotoPath+poiPhotoName+'" class="card-img-top" alt="..." >'+
+                                                '<div class="accordion" id="accordionExample">'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingOne">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                                                              'POI Location info'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">'+
+                                                          '<div class="card-body">'+
+                                                            '<ul class="list-group list-group-flush">'+
+                                                                    '<li class="list-group-item">Address: '+poiAddrs+'</li>'+
+                                                                    '<li class="list-group-item">Latidute: '+poiLatd+'</li>'+
+                                                                    '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
+                                                            '</ul>'+
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                      '<div class="card">'+
+                                                        '<div class="card-header" id="headingTwo">'+
+                                                          '<h2 class="mb-0">'+
+                                                            '<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">'+
+                                                              'POI Information'+
+                                                            '</button>'+
+                                                          '</h2>'+
+                                                        '</div>'+
+                                                        '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
+                                                          '<div class="card-body scroll" style=" height: 12rem; overflow-y: auto;">'+
+                                                             '<class="card-text">'+poiInfo+
+                                                          '</div>'+ 
+                                                          '</div>'+
+                                                        '</div>'+
+                                                      '</div>'+
+                                                    '</div>';
+                                            '</div>';
 							
 							//Προσθήκη του τρέχοντα marker με όρισμα τα latidude και longitude
 							addedmarker = new L.marker([poiLatd,poiLongd]).addTo(mymap);
 							
 							//Προσθήκη του castom popup και αντιστοίχιση των πληροφοριών
-							addedmarker.bindPopup(popupCardOtherPoi);
+							addedmarker.bindPopup(popupCardOtherPoi2);
 							
 				    }
                     //Adding other markers end--------------------------------------------------------------------------------------------
