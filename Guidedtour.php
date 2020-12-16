@@ -130,10 +130,10 @@
                             <a class="nav-link" href="About.php">About</a>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
+                    <!--form class="form-inline my-2 my-lg-0">
                       <input class="form-control mr-sm-2" type="text" placeholder="Search POI" aria-label="Search">
                       <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                    </form-->
                 </div>
             </nav>
         </div>
@@ -243,7 +243,8 @@
                     addedmarker.bindTooltip("Start", {permanent: true, direction: 'right'});
                     //Add custom popup with the start poi info
                     addedmarker.bindPopup(popupCardStartPoi).openPopup();
-                    //Start Poi marker------------------------------------------------------------------------------------------------
+                    
+                    //Start Poi marker end------------------------------------------------------------------------------------------------
                     
                     //End Poi marker--------------------------------------------------------------------------------------------------
                     //Poi Info from query to variable
@@ -372,7 +373,6 @@
 							
 							//Προσθήκη του castom popup και αντιστοίχιση των πληροφοριών
 							addedmarker.bindPopup(popupCardOtherPoi);
-							
 				    }
                     //Adding other markers end--------------------------------------------------------------------------------------------
                 }  
