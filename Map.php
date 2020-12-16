@@ -57,8 +57,36 @@
       
         <div id="container">
             <div id="mapid"></div>
+            <!-- ---------------------------------------------------------------------------------------------------------------------------- -->
+             <!--Connect to database and retrieve pois-->
+                <?php
+                    //Connect to database
+                    include 'Scripts/DbConnection.php';
+                    //Results array
+                    $poiRecords = array();
+                    //Get all pois from data base
+                    $qrNearByPois = "SELECT * FROM pointsofinterest";
+                    $qrNearPoisRes = mysqli_query($conn, $qrNearByPois);
+                    $qrNearPoisRCount = mysqli_num_rows($qrNearPoisRes);
+                    //Fiil array with records
+                    if ($qrNearPoisRCount != 0){
+                        while($row = mysqli_fetch_assoc($qrNearPoisRes)){
+                            $poiRecords[] = $row;
+                        }
+                    }
+                    //Close connection
+                    mysqli_close($conn);
+                ?>
+              <!-- ---------------------------------------------------------------------------------------------------------------------------- -->
             <script>
+                // Access the elements of the php return array
+	            var jsPoiRecords = <?php echo json_encode($poiRecords); ?>;
+                //Global variables
                 var map = L.map('mapid').fitWorld();
+                var position, radius, addedmarker;
+                
+                //Map added to page
+                $(function(){
 
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
                     maxZoom: 18,
@@ -68,24 +96,83 @@
                     tileSize: 512,
                     zoomOffset: -1
                 }).addTo(map);
-
+                     //Creating a group of markers
+                    //savedMarkers = new L.LayerGroup();
+                    //call the function that adds the markers on map
+                    //addMarkers(); 
+                    
+                });
+                
+                //if found location
                 function onLocationFound(e) {
-                    var radius = e.accuracy / 2;
-
-                    L.marker(e.latlng).addTo(map)
-                        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-                    L.circle(e.latlng, radius).addTo(map);
+                    //Setting radius
+                    radius = e.accuracy / 2;
+                    //Position
+                    L.marker(e.latlng).addTo(map).bindPopup("Your current position is" + radius + " meters away to this point").openPopup();
+                    position = e.latlng;
+                    //Range of position
+                    curRange = L.circle(e.latlng, radius).addTo(map);
+                    //Creating a group of markers
+                    savedMarkers = new L.LayerGroup();
+                    //call the function that adds the markers on map
+                    addMarkers(); 
+                    
                 }
-
+                
+                //If location not fount
                 function onLocationError(e) {
                     alert(e.message);
                 }
-
+                
+                //Add markers function
+                function addMarkers(){ 
+                    //Iterate array
+                    for(var j = 0;  j < jsPoiRecords.length; j++){
+                        var obj = jsPoiRecords[j];
+                            //Find values
+                            for (var key in obj){
+                                //var positionLatLong = "{Lat: "+ obj['PoiLatitude'] +", " +"Lng: "+ obj['PoiLongitude'] + "}"; 
+                                //console.log(positionLatLong);
+                                var locNm = obj['PoiName'];
+                                var locAddr= obj['PoiAddress'];
+                                var latd = obj['PoiLatitude'];
+                                var longd = obj['PoiLongitude'];
+                              
+                            }
+                        
+                        //Create popup form with info
+                         var popupform = '<h4>Πληροφορίες τοποθεσίας</h3>'+
+                                '<form name="locationData" role ="form">'+
+                                '<label for="locationNameTxt">Όνομα τοποθεσίας:</label><br>'+
+                                '<input type="text" id="locationNameTxt" name="locationNameTxt" value="'+locNm+'"><br>'+
+                                '<label for="locationAddressTxt">Διεύθυνση:</label><br>'+
+                                '<input type="text" id="locationAddressTxt" name="locationAddressTxt" value="'+locAddr+'"><br>'+
+                                '<label for="locationLatitudeTxt">Γεωγραφικό πλάτος:</label><br>'+
+                                '<input type="text" id="locationLatitudeTxt" name="locationLatitudeTxt" value="'+latd+'"><br>'+
+                                '<label for="locationLongitudeTxt">Γεωγραφικό μήκος:</label><br>'+
+                                '<input type="text" id="locationLongitudeTxt" name="locationLongitudeTxt" value="'+longd+'"><br>'+
+                                '</form>';
+                        
+                        //Add create current point latlng
+                        var newLatLng = new L.LatLng(latd, longd);
+                        //Add currebt marker if in range
+                        if (newLatLng.distanceTo(position)<radius){
+                            //Add marker to map
+                            addedmarker = new L.marker([latd,longd]).addTo(map);
+                        
+                            //Add the castom popup to marker
+                            addedmarker.bindPopup(popupform).openPopup();
+                        }
+                    }
+                }
+                
+                //Create circle and markers of pois on radious if location found
                 map.on('locationfound', onLocationFound);
+                //Print error message
                 map.on('locationerror', onLocationError);
-
+                //Find current location
                 map.locate({setView: true, maxZoom: 18});
+                
             </script>
         </div>
     </body>
