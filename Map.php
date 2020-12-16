@@ -141,25 +141,23 @@
                             }
                         
                         //Create popup form with info
-                         var popupform = '<h4>Πληροφορίες τοποθεσίας</h3>'+
-                                '<form name="locationData" role ="form">'+
-                                '<label for="locationNameTxt">Όνομα τοποθεσίας:</label><br>'+
-                                '<input type="text" id="locationNameTxt" name="locationNameTxt" value="'+locNm+'"><br>'+
-                                '<label for="locationAddressTxt">Διεύθυνση:</label><br>'+
-                                '<input type="text" id="locationAddressTxt" name="locationAddressTxt" value="'+locAddr+'"><br>'+
-                                '<label for="locationLatitudeTxt">Γεωγραφικό πλάτος:</label><br>'+
-                                '<input type="text" id="locationLatitudeTxt" name="locationLatitudeTxt" value="'+latd+'"><br>'+
-                                '<label for="locationLongitudeTxt">Γεωγραφικό μήκος:</label><br>'+
-                                '<input type="text" id="locationLongitudeTxt" name="locationLongitudeTxt" value="'+longd+'"><br>'+
-                                '</form>';
+                        var popupform = '<div class="card" style="width: 14rem; height:14rem;">'+
+                                              '<div class="card-title">'+
+                                                '<h5>'+locNm+'</h5>'+
+                                              '</div>'+
+                                              '<ul class="list-group list-group-flush">'+
+                                                '<li class="list-group-item">Address: '+locAddr+'</li>'+
+                                                '<li class="list-group-item">Latidute: '+latd+'</li>'+
+                                                '<li class="list-group-item">Longitude: '+longd+'</li>'+
+                                              '</ul>'+
+                                            '</div>';
                         
                         //Add create current point latlng
                         var newLatLng = new L.LatLng(latd, longd);
-                        //Add currebt marker if in range
+                        //Add current marker if in range
                         if (newLatLng.distanceTo(position)<radius){
                             //Add marker to map
                             addedmarker = new L.marker([latd,longd]).addTo(map);
-                        
                             //Add the castom popup to marker
                             addedmarker.bindPopup(popupform).openPopup();
                         }
