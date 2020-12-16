@@ -44,56 +44,54 @@
                 </div>
             </nav>
         </div>
-      
-        <div id="container">
 
         <div id="container">
-            <p></p>
-            <form class="form-horizontal" name="frmReg" onsubmit="return validateForm()" method="post" action="Scripts/CreateAccount.php" role="form">
-                        <!--Label and input field for first name-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="UserFirstNameField">First Name:</label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="UserFirstNameField" placeholder="Type your first name" name="UserFirstNameField">
-                            </div>
+            <div class="card scroll" style="padding-top: 5px; height: 100%; overflow-y: auto;">
+                <form class="form" name="frmReg" onsubmit="return validateForm()" method="post" action="Scripts/CreateAccount.php" role="form">
+                    <!--Label and input field for first name-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="UserFirstNameField">First Name:</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="UserFirstNameField" placeholder="Type your first name" name="UserFirstNameField">
                         </div>
-                        <!--Label and input field for last name-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="UserLastNameField">Last Name:</label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="UserLastNameField" placeholder="Type your last name" name="UserLastNameField">
-                            </div>
+                    </div>
+                    <!--Label and input field for last name-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="UserLastNameField">Last Name:</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="UserLastNameField" placeholder="Type your last name" name="UserLastNameField">
                         </div>
-                           <!--Label and input field for email address-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="UserEmailField">Email Address:</label>
-                            <div class="col-md-3">
-                                <input type="email" class="form-control" id="UserEmailField" placeholder="Type a valid email address" name="UserEmailField">
-                            </div>
+                    </div>
+                       <!--Label and input field for email address-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="UserEmailField">Email Address:</label>
+                        <div class="col-md-3">
+                            <input type="email" class="form-control" id="UserEmailField" placeholder="Type a valid email address" name="UserEmailField">
                         </div>
-                        <!--Label and input field for password-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="UserPasswordField">Password:</label>
-                            <div class="col-md-3">
-                                <input type="password" class="form-control" id="UserPasswordField" placeholder="Type your password" name="UserPasswordField" title="If your password contains less than 8 characters you must confirm it below">
-                            </div>
+                    </div>
+                    <!--Label and input field for password-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="UserPasswordField">Password:</label>
+                        <div class="col-md-3">
+                            <input type="password" class="form-control" id="UserPasswordField" placeholder="Type your password" name="UserPasswordField" title="If your password contains less than 8 characters you must confirm it below">
                         </div>
-                        <!--Label and input field for password validation-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="ReenterUserPasswordField">Reenter Password:</label>
-                            <div class="col-md-3">
-                                <input type="password" class="form-control" id="ReenterUserPasswordField" placeholder="Retype your password to confirm" name="ReenterUserPasswordField">
-                            </div>
+                    </div>
+                    <!--Label and input field for password validation-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="ReenterUserPasswordField">Reenter Password:</label>
+                        <div class="col-md-3">
+                            <input type="password" class="form-control" id="ReenterUserPasswordField" placeholder="Retype your password to confirm" name="ReenterUserPasswordField">
                         </div>
-                        <!--Submit and reset buttons-->
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <button type="submit" name="SaveUser" class="btn btn-default">Submit account</button>
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset</button>
-                            </div>
+                    </div>
+                    <!--Submit and reset buttons-->
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" name="SaveUser" class="btn btn-default">Submit account</button>
+                            <button type="reset" class="btn btn-danger" value="Reset">Reset</button>
                         </div>
-
-                    </form><!--Τέλος φόρμας-->
+                    </div>
+                </form><!--Τέλος φόρμας-->
+            </div>
         </div>
     </body>
 </html>

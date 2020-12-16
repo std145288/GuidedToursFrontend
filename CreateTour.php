@@ -21,7 +21,7 @@
     </head>
 
     <body>
-        <div class="menuarea">
+        <div class="container">
             <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <a class="navbar-brand" href="Home.php">AmGdTr</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,88 +76,86 @@
         </div>
       
         <div id="container">
-
-            <p></p>
-            <form class="form-horizontal" name="GuidedTourData" method="post" action="Scripts/InsertTour.php" role="form" enctype="multipart/form-data">
-                        <!--Label and input field where the name of customer is filled-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="GuidedTourCustomerField">Customer :</label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="GuidedTourCustomerField" name="GuidedTourCustomerField" value="<?php echo $_SESSION['currentCustomerFirstName']." - ".$_SESSION['currentCustomerLastName'] ?>">
-                            </div>
+            <div class="card scroll" style="padding-top: 5px; height: 100%; overflow-y: auto;">
+                <form class="form" name="GuidedTourData" method="post" action="Scripts/InsertTour.php" role="form" enctype="multipart/form-data">
+                    <!--Label and input field where the name of customer is filled-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="GuidedTourCustomerField">Customer :</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="GuidedTourCustomerField" name="GuidedTourCustomerField" value="<?php echo $_SESSION['currentCustomerFirstName']." - ".$_SESSION['currentCustomerLastName'] ?>">
                         </div>
-                        <!--Label and input field for input th number of visitors-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="GuidedTourVisitorsNumberField">Number of visitors:</label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="UserLastNameField" placeholder="Type the number of visitors" name="GuidedTourVisitorsNumberField">
-                            </div>
+                    </div>
+                    <!--Label and input field for input th number of visitors-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="GuidedTourVisitorsNumberField">Number of visitors:</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="UserLastNameField" placeholder="Type the number of visitors" name="GuidedTourVisitorsNumberField">
                         </div>
-                           <!--Label and input field for date time selection-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="GuidedTourDateField">Date</label>
-                            <div class="col-md-3">
-                                <input type="date" class="form-control" id="GuidedTourDateField" name="GuidedTourDateField" value="2020-12-01" min="2020-01-01" max="2021-12-31">
-                            </div>
+                    </div>
+                       <!--Label and input field for date time selection-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="GuidedTourDateField">Date</label>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="GuidedTourDateField" name="GuidedTourDateField" value="2020-12-01" min="2020-01-01" max="2021-12-31">
                         </div>
-                        <!--Label and input field for for start time selection-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="GuidedTourStartTimeField">Start Time:</label>
-                            <div class="col-md-3">
-                                <input type="time" class="form-control" id="GuidedTourStartTimeField" name="GuidedTourStartTimeField" value="2020-12-01" min="09:00" max="20:00">
-                            </div>
+                    </div>
+                    <!--Label and input field for for start time selection-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="GuidedTourStartTimeField">Start Time:</label>
+                        <div class="col-md-3">
+                            <input type="time" class="form-control" id="GuidedTourStartTimeField" name="GuidedTourStartTimeField" value="2020-12-01" min="09:00" max="20:00">
                         </div>
-                        <!--Label and input field for end time selection-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="GuidedTourEndTimeField">End Time:</label>
-                            <div class="col-md-3">
-                                <input type="time" class="form-control" id="GuidedTourEndTimeField" name="GuidedTourEndTimeField" value="2020-12-01" min="10:00" max="21:00">
-                            </div>
+                    </div>
+                    <!--Label and input field for end time selection-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="GuidedTourEndTimeField">End Time:</label>
+                        <div class="col-md-3">
+                            <input type="time" class="form-control" id="GuidedTourEndTimeField" name="GuidedTourEndTimeField" value="2020-12-01" min="10:00" max="21:00">
                         </div>
-                        <!--Label and input field for start poi selection-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="GuidedTourStartPoiField">Start poi:</label>
-                            <div class="col-md-3">
-                                <select class="form-control" id="GuidedTourStartPoiField" name="GuidedTourStartPoiField" >
-                                    <option>Select start poi</option>
-                                    <!--Filling dropdown with pois "from scripts/FindPois.php" -->
-                                    <?php
-                                        $count = 0;
-                                        foreach ($pois as $poi) {
-                                            $count++;
-                                            echo "<option>".$poi['PoiName']."</option>";
-                                        }
-                                    ?><!--End Filling dropdown with pois-->    
-                                </select><br><br>
-                            </div>
+                    </div>
+                    <!--Label and input field for start poi selection-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="GuidedTourStartPoiField">Start poi:</label>
+                        <div class="col-md-3">
+                            <select class="form-control" id="GuidedTourStartPoiField" name="GuidedTourStartPoiField" >
+                                <option>Select start poi</option>
+                                <!--Filling dropdown with pois "from scripts/FindPois.php" -->
+                                <?php
+                                    $count = 0;
+                                    foreach ($pois as $poi) {
+                                        $count++;
+                                        echo "<option>".$poi['PoiName']."</option>";
+                                    }
+                                ?><!--End Filling dropdown with pois-->    
+                            </select><br>
                         </div>
-                        <!--Label and input field for end poi selection-->
-                        <div class="required form-group">
-                            <label class="control-label col-sm-3" for="GuidedTourEndPoiField">End poi:</label>
-                            <div class="col-md-3">
-                                <select class="form-control" id="GuidedTourEndPoiField" name="GuidedTourEndPoiField" >
-                                    <option>Select end poi</option>
-                                    <!--Filling dropdown with pois "from scripts/FindPois.php" -->
-                                    <?php
-                                        $count = 0;
-                                        foreach ($pois as $poi) {
-                                            $count++;
-                                            echo "<option>".$poi['PoiName']."</option>";
-                                        }
-                                    ?><!--End Filling dropdown with pois-->
-                                </select><br><br>
-                            </div>
+                    </div>
+                    <!--Label and input field for end poi selection-->
+                    <div class="required form-group">
+                        <label class="control-label col-sm-3" for="GuidedTourEndPoiField">End poi:</label>
+                        <div class="col-md-3">
+                            <select class="form-control" id="GuidedTourEndPoiField" name="GuidedTourEndPoiField" >
+                                <option>Select end poi</option>
+                                <!--Filling dropdown with pois "from scripts/FindPois.php" -->
+                                <?php
+                                    $count = 0;
+                                    foreach ($pois as $poi) {
+                                        $count++;
+                                        echo "<option>".$poi['PoiName']."</option>";
+                                    }
+                                ?><!--End Filling dropdown with pois-->
+                            </select><br>
                         </div>
-                        <!--Submit and reset buttons-->
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <button type="submit" name="SaveTour" class="btn btn-default">Submit tour</button>
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset</button>
-                            </div>
+                    </div>
+                    <!--Submit and reset buttons-->
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" name="SaveTour" class="btn btn-default">Submit tour</button>
+                            <button type="reset" class="btn btn-danger" value="Reset">Reset</button>
                         </div>
-                         
-
-                    </form><!--Τέλος φόρμας-->
-        </div>
+                    </div>
+                </form><!--Τέλος φόρμας-->
+            </div>
+         </div>
     </body>
 </html>
