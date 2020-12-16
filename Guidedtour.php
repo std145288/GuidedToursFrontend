@@ -236,18 +236,6 @@
                                                     '</div>';
                                             '</div>';
                     
-                    
-                           
-                    
-                    //Icon for start poi
-                    //var starticon = L.icon({
-                        //iconUrl: 'Images/StartIcon.png',
-                        //iconSize:     [38, 38], // size of the icon
-                        //shadowSize:   [50, 64], // size of the shadow
-                        //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-                        //shadowAnchor: [4, 62],  // the same for the shadow
-                        //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-                    //});
                         
                     //Add current marker of start poi using latidude and longitude
                     addedmarker = new L.marker([startPoiLatd,startPoiLongd]).addTo(mymap);
@@ -270,23 +258,8 @@
                             var endPoiPhotoPath = objEndPoi['endPoiPhotoPath'];
                     }
                     
-                    //Creating the custom popup with bootstrap card for end poi
-                    var popupCardEndPoi = '<div class="card" style="width: 15rem; height: 30rem;">'+
-                                              '<img src="'+endPoiPhotoPath+endPoiPhotoName+'" class="card-img-top" alt="...">'+
-                                              '<div class="card-title">'+
-                                                '<h5>'+endPoiNm+'</h5>'+
-                                              '</div>'+
-                                              '<div class="card-body scroll "style="overflow-y: auto;">'+
-                                                '<p class="card-text">'+startPoiInf+'</p>'+
-                                              '</div>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Address: '+endPoiAddrs+'</li>'+
-                                                '<li class="list-group-item">Latidute: '+endPoiLatd+'</li>'+
-                                                '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
-                                              '</ul>'+
-                                            '</div>';
                     
-                     var popupCardEndPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+                     var popupCardEndPoi ='<div class="card" style="width: 15rem; height: 34rem; ">'+
                                               '<div class="card-title">'+
                                                 '<h6>'+endPoiNm+'</h6>'+
                                               '</div>'+
@@ -320,7 +293,7 @@
                                                         '</div>'+
                                                         '<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">'+
                                                           '<div class="card-body scroll" style=" height: 12rem; overflow-y: auto;">'+
-                                                             '<class="card-text">'+startPoiInf+
+                                                             '<class="card-text">'+endPoiInf+
                                                           '</div>'+ 
                                                           '</div>'+
                                                         '</div>'+
@@ -335,7 +308,7 @@
                     addedmarker.bindTooltip("End", {permanent: true, direction: 'right'});
                     
                     //Add custom popup with the end poi info
-                    addedmarker.bindPopup(popupCardEndPoi2);
+                    addedmarker.bindPopup(popupCardEndPoi);
                     //End Poi marker--------------------------------------------------------------------------------------------------
                     
                     //Adding other markers--------------------------------------------------------------------------------------------
@@ -351,24 +324,8 @@
                                     var poiPhotoName = obj['PoiPhotoName'];
                                     var poiPhotoPath = obj['PoiPhotoPath'];
 								}
-							
-							 //Creating the custom popup with bootstrap card for end poi
-                            var popupCardOtherPoi = '<div class="card" style="width: 15rem; height: 30rem; ">'+
-                                              '<img src="'+poiPhotoPath+poiPhotoName+'" class="card-img-top" alt="...">'+
-                                              '<div class="card-title">'+
-                                                '<h5>'+poiNm+'</h5>'+
-                                              '</div>'+
-                                              '<div class="card-body scroll" style="overflow-y: auto;">'+
-                                                '<p class="card-text">'+poiInf+'</p>'+
-                                              '</div>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Address: '+poiAddrs+'</li>'+
-                                                '<li class="list-group-item">Latidute: '+poiLatd+'</li>'+
-                                                '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
-                                              '</ul>'+
-                                            '</div>';
-                        
-                        var popupCardOtherPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+
+                        var popupCardOtherPoi ='<div class="card" style="width: 15rem; height: 34rem; ">'+
                                               '<div class="card-title">'+
                                                 '<h6>'+poiNm+'</h6>'+
                                               '</div>'+
@@ -414,7 +371,7 @@
 							addedmarker = new L.marker([poiLatd,poiLongd]).addTo(mymap);
 							
 							//Προσθήκη του castom popup και αντιστοίχιση των πληροφοριών
-							addedmarker.bindPopup(popupCardOtherPoi2);
+							addedmarker.bindPopup(popupCardOtherPoi);
 							
 				    }
                     //Adding other markers end--------------------------------------------------------------------------------------------
@@ -485,36 +442,7 @@
                             var startPoiPhotoPath = objStartPoi['startPoiPhotoPath'];
                     }
                     //Creating the custom popup with bootstrap card for start poi
-                    var popupCardStartPoi = '<div class="card scroll" style="width: 15rem; height: 30rem; overflow-y: auto; ">'+
-                                              '<h6>Upcoming Tour Info:</h6>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Tour Date: '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
-                                                '<li class="list-group-item">Tour start time: '+jsGuidedTour[0]['GuidedTourStartTime']+'</li>'+
-                                                '<li class="list-group-item">Tour end time: '+jsGuidedTour[0]['GuidedTourEndTime']+'</li>'+
-                                                '<li class="list-group-item">Number of visitors: '+jsGuidedTour[0]['NumberOfVisitors']+'</li>'+
-                                                '<li class="list-group-item">Start poi: '+startPoiNm+'</li>'+
-                                              '</ul>'+
-                                              '<h6>Customer Contact Info:</h6>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Customer first name: '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
-                                                '<li class="list-group-item">Customer last name: '+jsGuidedTourCustomer[0]['tourCustomerLastName']+'</li>'+
-                                                '<li class="list-group-item">Customer email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
-                                              '</ul>'+
-                                                '<h6>Assigned Vehicle:</h6>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Vehicle Number: '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
-                                                '<li class="list-group-item">Vehicle Plate Number: '+jsGuidedTourVehicle[0]['tourVehiclePlateNumber']+'</li>'+
-                                              '</ul>'+
-                                                '<div class="card-title">'+
-                                                '<h6>Assigned Guide:</h6>'+
-                                              '</div>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Guide Name: '+jsGuidedTourGuide[0]['tourGuideFirstName']+'</li>'+
-                                                '<li class="list-group-item">Guide Last Name: '+jsGuidedTourGuide[0]['tourGuideLastName']+'</li>'+
-                                                '<li class="list-group-item">Guide Email Address: '+jsGuidedTourGuide[0]['tourGuideEmailAddress']+'</li>'+
-                                              '</ul>'+
-                                            '</div>';
-                    var popupCardStartPoi2 = '<div class="accordion" id="accordionExample">'+
+                    var popupCardStartPoi = '<div class="accordion" id="accordionExample">'+
                                   '<div class="card">'+
                                     '<div class="card-header" id="headingOne">'+
                                       '<h2 class="mb-0">'+
@@ -593,7 +521,7 @@
                     //Bind tooltip to added marker
                     addedmarker.bindTooltip("Start", {permanent: true, direction: 'right'});
                     //Add custom popup with the start poi info
-                    addedmarker.bindPopup(popupCardStartPoi2).openPopup();
+                    addedmarker.bindPopup(popupCardStartPoi).openPopup();
                     //Start Poi marker------------------------------------------------------------------------------------------------
                     
                     //End Poi marker--------------------------------------------------------------------------------------------------
@@ -731,45 +659,9 @@
                             var startPoiLongd = objStartPoi['startPoiLongitude'];
                             var poiInf = objStartPoi['startPoiDetailedInfo'];
                     }
-                    //Creating the custom popup with bootstrap card for start poi
-                    var popupCardStartPoi = '<div class="card scroll" style="width: 15rem; height: 30rem; overflow-y: auto; ">'+
-                                               '<h6>Upcoming Tour Info:</h6>'+
-                                               '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Tour Date: '+jsGuidedTour[0]['GuidedTourDate']+'</li>'+
-                                                '<li class="list-group-item">Tour start time: '+jsGuidedTour[0]['GuidedTourStartTime']+'</li>'+
-                                                '<li class="list-group-item">Tour end time: '+jsGuidedTour[0]['GuidedTourEndTime']+'</li>'+
-                                                '<li class="list-group-item">Number of visitors: '+jsGuidedTour[0]['NumberOfVisitors']+'</li>'+
-                                                '<li class="list-group-item">Start poi: '+startPoiNm+'</li>'+
-                                              '</ul>'+
-                                              '<h6>Customer Contact Info:</h6>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Customer first name: '+jsGuidedTourCustomer[0]['tourCustomerFirstName']+'</li>'+
-                                                '<li class="list-group-item">Customer last name: '+jsGuidedTourCustomer[0]['tourCustomerLastName']+'</li>'+
-                                                '<li class="list-group-item">Customer email address: '+jsGuidedTourCustomer[0]['tourCustomerEmailAddress']+'</li>'+
-                                              '</ul>'+
-                                                '<h6>Assigned Vehicle:</h6>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Vehicle Number: '+jsGuidedTourVehicle[0]['tourVehicleNumber']+'</li>'+
-                                                '<li class="list-group-item">Vehicle Plate Number: '+jsGuidedTourVehicle[0]['tourVehiclePlateNumber']+'</li>'+
-                                              '</ul>'+
-                                                '<div class="card-title">'+
-                                                '<h6>Assigned Driver:</h6>'+
-                                              '</div>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Guide Name: '+jsGuidedTourDriver[0]['tourDriverFirstName']+'</li>'+
-                                                '<li class="list-group-item">Guide Last Name: '+jsGuidedTourDriver[0]['tourDriverLastName']+'</li>'+
-                                                '<li class="list-group-item">Guide Email Address: '+jsGuidedTourDriver[0]['tourDriverEmailAddress']+'</li>'+
-                                              '</ul>'+
-                                                '</ul>'+
-                                                '<div class="card-title">'+
-                                                '<h6>Poi info:</h6>'+
-                                                '</div>'+
-                                                '<div class="card-body scroll" style="overflow-y: auto;">'+
-                                                '<p class="card-text">'+poiInf+'</p>'+
-                                                '</div>'+ 
-                                            '</div>';
                     
-                    var popupCardStartPoi2 = '<div class="accordion" id="accordionExample">'+
+                    //Creating the custom popup with bootstrap card for start poi  
+                    var popupCardStartPoi = '<div class="accordion" id="accordionExample">'+
                                   '<div class="card">'+
                                     '<div class="card-header" id="headingOne">'+
                                       '<h2 class="mb-0">'+
@@ -863,7 +755,7 @@
                     //Bind tooltip to added marker
                     addedmarker.bindTooltip("Start", {permanent: true, direction: 'right'});
                     //Add custom popup with the start poi info
-                    addedmarker.bindPopup(popupCardStartPoi2).openPopup();
+                    addedmarker.bindPopup(popupCardStartPoi).openPopup();
                     //Start Poi marker------------------------------------------------------------------------------------------------
                     
                     //End Poi marker--------------------------------------------------------------------------------------------------
@@ -879,23 +771,8 @@
                             var endPoiPhotoPath = objEndPoi['endPoiPhotoPath'];
                     }
                     
-                    //Creating the custom popup with bootstrap card for end poi
-                    var popupCardEndPoi = '<div class="card" style="width: 15rem; height: 30rem;">'+
-                                              '<img src="'+endPoiPhotoPath+endPoiPhotoName+'" class="card-img-top" alt="...">'+
-                                              '<div class="card-title">'+
-                                                '<h5>'+endPoiNm+'</h5>'+
-                                              '</div>'+
-                                              '<div class="card-body scroll" style="overflow-y: auto;">'+
-                                                '<p class="card-text">'+endPoiInf+'</p>'+
-                                              '</div>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Address: '+endPoiAddrs+'</li>'+
-                                                '<li class="list-group-item">Latidute: '+endPoiLatd+'</li>'+
-                                                '<li class="list-group-item">Longitude: '+endPoiLongd+'</li>'+
-                                              '</ul>'+
-                                            '</div>';
-                    
-                    var popupCardEndPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+                    //Creating the custom popup with bootstrap card for end poi                    
+                    var popupCardEndPoi='<div class="card" style="width: 15rem; height: 34rem; ">'+
                                               '<div class="card-title">'+
                                                 '<h6>'+endPoiNm+'</h6>'+
                                               '</div>'+
@@ -946,7 +823,7 @@
                     addedmarker.bindTooltip("End", {permanent: true, direction: 'right'});
                     
                     //Add custom popup with the end poi info
-                    addedmarker.bindPopup(popupCardEndPoi2);
+                    addedmarker.bindPopup(popupCardEndPoi);
                     //End Poi marker--------------------------------------------------------------------------------------------------
                     
                     //Adding other markers--------------------------------------------------------------------------------------------
@@ -964,22 +841,8 @@
 								}
 							
 							 //Creating the custom popup with bootstrap card for end poi
-                            var popupCardOtherPoi = '<div class="card" style="width: 15rem; height: 30rem; ">'+
-                                              '<img src="'+poiPhotoPath+poiPhotoName+'" class="card-img-top" alt="...">'+
-                                              '<div class="card-title">'+
-                                                '<h5>'+poiNm+'</h5>'+
-                                              '</div>'+
-                                                '<div class="card-body scroll" style="overflow-y: auto;">'+
-                                                '<p class="card-text">'+poiInfo+'</p>'+
-                                              '</div>'+
-                                              '<ul class="list-group list-group-flush">'+
-                                                '<li class="list-group-item">Address: '+poiAddrs+'</li>'+
-                                                '<li class="list-group-item">Latidute: '+poiLatd+'</li>'+
-                                                '<li class="list-group-item">Longitude: '+poiLongd+'</li>'+
-                                              '</ul>'+
-                                            '</div>';
                         
-                        var popupCardOtherPoi2 ='<div class="card" style="width: 15rem; height: 34rem; ">'+
+                        var popupCardOtherPoi ='<div class="card" style="width: 15rem; height: 34rem; ">'+
                                               '<div class="card-title">'+
                                                 '<h6>'+poiNm+'</h6>'+
                                               '</div>'+
@@ -1025,7 +888,7 @@
 							addedmarker = new L.marker([poiLatd,poiLongd]).addTo(mymap);
 							
 							//Προσθήκη του castom popup και αντιστοίχιση των πληροφοριών
-							addedmarker.bindPopup(popupCardOtherPoi2);
+							addedmarker.bindPopup(popupCardOtherPoi);
 							
 				    }
                     //Adding other markers end--------------------------------------------------------------------------------------------
